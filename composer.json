@@ -1,29 +1,27 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "a909m/filament-statefusion",
+    "description": "Filament StateFusion is a powerful FilamentPHP plugin that seamlessly integrates Spatie Laravel Model States into the Filament admin panel. This package provides an intuitive way to manage model states, transitions, and filtering within Filament, enhancing the user experience and developer productivity.",
     "keywords": [
-        ":vendor_name",
+        "A909M",
         "laravel",
-        ":package_slug"
+        "filament-statefusion"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/a909m/filament-statefusion",
     "support": {
-        "issues": "https://github.com/:vendor_slug/:package_slug/issues",
-        "source": "https://github.com/:vendor_slug/:package_slug"
+        "issues": "https://github.com/a909m/filament-statefusion/issues",
+        "source": "https://github.com/a909m/filament-statefusion"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "A909M",
+            "email": "assemcc2022@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.1",
         "filament/filament": "^3.0",
-        "filament/forms": "^3.0",
-        "filament/tables": "^3.0",
         "spatie/laravel-package-tools": "^1.15.0"
     },
     "require-dev": {
@@ -36,18 +34,17 @@
         "pestphp/pest-plugin-laravel": "^2.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
-        "phpstan/phpstan-phpunit": "^1.0",
-        "spatie/laravel-ray": "^1.26"
+        "phpstan/phpstan-phpunit": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src/",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories/"
+            "A909M\\FilamentStateFusion\\": "src/",
+            "A909M\\FilamentStateFusion\\Database\\Factories\\": "database/factories/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests/"
+            "A909M\\FilamentStateFusion\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -67,10 +64,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "A909M\\FilamentStateFusion\\FilamentStateFusionServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "FilamentStateFusion": "A909M\\FilamentStateFusion\\Facades\\FilamentStateFusion"
             }
         }
     },

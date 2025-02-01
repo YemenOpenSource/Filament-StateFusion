@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace A909M\FilamentStateFusion\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentStateFusionCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-statefusion';
 
     public $description = 'My command';
 

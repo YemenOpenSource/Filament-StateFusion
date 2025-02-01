@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace A909M\FilamentStateFusion;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class FilamentStateFusionPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'filament-statefusion';
     }
 
     public function register(Panel $panel): void
