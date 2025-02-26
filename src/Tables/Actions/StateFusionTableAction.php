@@ -28,7 +28,7 @@ class StateFusionTableAction extends Action implements HasStateAttributesContrac
             function ($record) {
                 return ! in_array($this->getToState()::getMorphClass(), $record->{$this->getAttribute()}->transitionableStates());
 
-                return ! ($this->getFromState()::config()->isTransitionAllowed($this->getFromState()::getMorphClass(), $this->getToState()::getMorphClass()) && $record->{$this->getAttribute()}?->canTransitionTo($this->getToStateClass()));
+                // return ! ($this->getFromState()::config()->isTransitionAllowed($this->getFromState()::getMorphClass(), $this->getToState()::getMorphClass()) && $record->{$this->getAttribute()}?->canTransitionTo($this->getToStateClass()));
             }
         );
         $this->action(function ($record, array $data): void {
