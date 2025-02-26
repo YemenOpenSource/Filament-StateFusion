@@ -12,8 +12,6 @@ class FilamentStateFusionServiceProvider extends PackageServiceProvider
 {
     public static string $name = 'filament-statefusion';
 
-    public static string $viewNamespace = 'filament-statefusion';
-
     public function configurePackage(Package $package): void
     {
         /*
