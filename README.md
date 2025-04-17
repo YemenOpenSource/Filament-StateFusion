@@ -1,33 +1,11 @@
 # Filament-StateFusion
 
+**Filament StateFusion** is a powerful FilamentPHP plugin that seamlessly integrates [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) into the Filament admin panel. This package provides an intuitive way to manage model states, transitions, and filtering within Filament, enhancing the user experience and developer productivity.
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/a909m/filament-statefusion.svg?style=flat-square)](https://packagist.org/packages/a909m/filament-statefusion)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/a909m/filament-statefusion/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/a909m/filament-statefusion/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/a909m/filament-statefusion/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/a909m/filament-statefusion/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/a909m/filament-statefusion.svg?style=flat-square)](https://packagist.org/packages/a909m/filament-statefusion)
-
-Filament StateFusion is a powerful FilamentPHP plugin that seamlessly integrates Spatie Laravel Model States into the Filament admin panel. This package provides an intuitive way to manage model states, transitions, and filtering within Filament, enhancing the user experience and developer productivity.
-
-# Introduction
-
-The Model States for Filament plug-in is a powerful tool that seamlessly integrates model states and transitions into the Filament UI. It supports Spatie Laravel Model States out-of-the-box, which makes transitioning, listing, and filtering states effortless tasks.
-
-# Example
-
-Consider a scenario where you're managing an e-commerce platform with various order states like new, processing, shipped, delivered, and canceled. With this plug-in, you can effortlessly list all products based on their states, apply filters to quickly locate specific orders in each state, and seamlessly transition between states directly within Filament's intuitive interface. For instance, you can move an order from processing to shipped with just a few clicks, streamlining your workflow and enhancing productivity.
-
-This plug-in leverages the robust capabilities of Filament PHP and the support of Spatie Laravel Model States out-of-the-box, providing a seamless solution for managing model states and transitions with efficiency and ease.
-
-```mermaid
-tateDiagram-v2
-  [*] --> New
-  New --> Processing
-  New --> Canceled
-  Processing --> Shipped
-  Processing --> Canceled
-  Shipped --> Delivered
-  Delivered --> [*]
-  Canceled --> [*]
-```
 
 # Features
 
