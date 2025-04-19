@@ -28,21 +28,13 @@ composer require a909m/filament-statefusion
 
 ## Setup
 
-In this paragraph, we list the steps you need to follow to get up and running with the out-of-the-box supported Spatie
-integration.
+Make sure you have configured at least one Spatie Laravel model state. For more information, refer to the official Spatie [documentation](https://spatie.be/docs/laravel-model-states/v2/01-introduction).
 
-### Spatie
+### State Preparation
 
-Make sure you have configured at least one Spatie Laravel model state. For more information, refer to the official
-Spatie [documentation](https://spatie.be/docs/laravel-model-states/v2/01-introduction).
+When utilizing Spatie Laravel Model States, you'll have several abstract state classes. These abstract classes require certain modifications. To properly integrate them, it's necessary to implement the `HasFilamentStateFusion` interface and utilize the `StateFusionInfo` trait.
 
-#### State Preparation
-
-When utilizing Spatie Laravel Model States, you'll have several abstract state classes. These abstract classes
-require certain modifications. To properly integrate them, it's necessary to implement the `FilamentSpatieState`
-interface and utilize the `ProvidesSpatieStateToFilament` trait.
-
-Here's an example of the `OrderState` abstract class with the necessary modifications already applied.
+Here's an example of the `OrderState` abstract class with the necessary modifications already applied:
 
 ```php
 <?php
@@ -54,7 +46,6 @@ use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
 use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
 use Spatie\ModelStates\State;
 use Spatie\ModelStates\StateConfig;
-
 
 abstract class OrderState extends State implements HasFilamentStateFusion
 {
