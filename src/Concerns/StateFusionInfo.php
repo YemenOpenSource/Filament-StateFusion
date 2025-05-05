@@ -15,7 +15,7 @@ trait StateFusionInfo
     public static function getStatesLabel($model): array
     {
         return self::getStateMapping()->mapWithKeys(function ($stateClass) use ($model) {
-            return [$stateClass::$name => (new $stateClass($model))->getLabel()];
+            return [$stateClass::$name => (new $stateClass($model))->getLabel() ?? $stateClass::$name];
         })->toArray();
     }
 
