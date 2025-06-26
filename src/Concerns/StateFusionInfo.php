@@ -27,7 +27,12 @@ trait StateFusionInfo
     public static function getStatesColor($model): array
     {
         return self::getStateMapping()->mapWithKeys(function ($stateClass) use ($model) {
-            return [$stateClass::$name => (new $stateClass($model))->getColor()];
+            $instance = new $stateClass($model);
+            // Check if the class implements HasColor interface before calling getColor
+            if (method_exists($instance, 'getColor')) {
+                return [$stateClass::$name => $instance->getColor()];
+            }
+            return [$stateClass::$name => null];
         })->toArray();
     }
 
@@ -39,7 +44,12 @@ trait StateFusionInfo
     public static function getStatesDescription($model): array
     {
         return self::getStateMapping()->mapWithKeys(function ($stateClass) use ($model) {
-            return [$stateClass::$name => (new $stateClass($model))->getDescription()];
+            $instance = new $stateClass($model);
+            // Check if the class implements HasDescription interface before calling getDescription
+            if (method_exists($instance, 'getDescription')) {
+                return [$stateClass::$name => $instance->getDescription()];
+            }
+            return [$stateClass::$name => null];
         })->toArray();
     }
 
@@ -51,7 +61,12 @@ trait StateFusionInfo
     public static function getStatesIcon($model): array
     {
         return self::getStateMapping()->mapWithKeys(function ($stateClass) use ($model) {
-            return [$stateClass::$name => (new $stateClass($model))->getIcon()];
+            $instance = new $stateClass($model);
+            // Check if the class implements HasIcon interface before calling getIcon
+            if (method_exists($instance, 'getIcon')) {
+                return [$stateClass::$name => $instance->getIcon()];
+            }
+            return [$stateClass::$name => null];
         })->toArray();
     }
 }
