@@ -11,19 +11,21 @@
 
 ## Table of Contents
 
--   [Introduction](#introduction)
--   [Features](#features)
--   [Screenshots](#screenshots)
--   [Installation](#installation)
--   [Setup](#setup)
--   [Usage](#usage)
--   [Customization](#customization)
--   [Testing](#testing)
--   [Changelog](#changelog)
--   [Contributing](#contributing)
--   [Security](#security-vulnerabilities)
--   [Credits](#credits)
--   [License](#license)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Quickstart](#quickstart)
+- [Screenshots](#screenshots)
+- [Installation](#installation)
+- [Setup](#setup)
+- [Usage](#usage)
+- [Customization](#customization)
+- [Testing](#testing)
+- [Changelog](#changelog)
+- [Contributing](#contributing)
+- [Security](#security-vulnerabilities)
+- [Credits](#credits)
+- [License](#license)
 
 ---
 
@@ -31,10 +33,10 @@
 
 Filament-StateFusion brings the power of [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) to your Filament admin panel. It allows you to:
 
--   Display model states in tables and exports
--   Filter and group records by state
--   Transition between states using intuitive UI components
--   Support custom transitions with forms and additional data
+- Display model states in tables
+- Filter and group records by state
+- Transition between states using intuitive UI components
+- Support custom transitions with forms and additional data
 
 This plugin is ideal for applications that use state machines, such as order processing, publishing workflows, or any scenario where models have well-defined states and transitions.
 
@@ -42,14 +44,126 @@ This plugin is ideal for applications that use state machines, such as order pro
 
 ## Features
 
--   List model states in Filament tables
--   Filter and group records by state
--   Transition to valid states using select, toggle, page, or table actions
--   Bulk transition records to new states
--   Out-of-the-box support for [Spatie Laravel Model States](https://spatie.be.docs/laravel-model-states)
--   Custom transition forms for collecting additional data
--   Customizable labels, colors, icons, and descriptions for states and transitions
--   Compatible with Filament dark mode
+- List model states in Filament tables
+- Filter and group records by state
+- Transition to valid states using select, toggle, page, or table actions
+- Bulk transition records to new states
+- Out-of-the-box support for [Spatie Laravel Model States](https://spatie.be.docs/laravel-model-states)
+- Custom transition forms for collecting additional data
+- Customizable labels, colors, icons, and descriptions for states and transitions
+- Compatible with Filament dark mode
+
+---
+
+## Requirements
+
+This plugin is designed to work with the following dependencies:
+
+- PHP: ^8.1
+- Laravel: ^10.0|^11.0
+- Filament: ^3.0
+- Spatie Laravel Model States: ^2.0
+
+
+## Getting Started
+
+First, you need to have the [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) package installed and configured. Make sure you have created an abstract state class for your model.
+
+Next, install the Filament-StateFusion plugin via Composer:
+
+```bash
+composer require a909m/filament-statefusion
+```
+
+Then, implement the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait on your abstract state class and any custom transition classes.
+
+Finally, you can start using the components and actions provided by this plugin in your Filament resources.
+
+---
+
+## Quickstart
+
+Here\'s a quick example of how to get started.
+
+1.  **Define your states and transitions:**
+
+    ```php
+    // app/Models/States/OrderState.php
+    use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
+    use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
+    use Spatie\ModelStates\State;
+    use Spatie\ModelStates\StateConfig;
+
+    abstract class OrderState extends State implements HasFilamentStateFusion
+    {
+        use StateFusionInfo;
+
+        public static function config(): StateConfig
+        {
+            return parent::config()
+                ->default(NewState::class)
+                ->allowTransition(NewState::class, ProcessingState::class)
+                ->allowTransition(ProcessingState::class, ShippedState::class);
+        }
+    }
+    ```
+
+2.  **Add the state to your model:**
+
+    ```php
+    // app/Models/Order.php
+    use App\Models\States\OrderState;
+    use Illuminate\Database\Eloquent\Model;
+    use Spatie\ModelStates\HasStates;
+
+    class Order extends Model
+    {
+        use HasStates;
+
+        protected $casts = [
+            \'status\' => OrderState::class,
+        ];
+    }
+    ```
+
+3.  **Use the components in your Filament resource:**
+
+    ```php
+    // app/Filament/Resources/OrderResource.php
+    use A909M\FilamentStateFusion\Tables\Columns\StateFusionSelectColumn;
+    use A909M\FilamentStateFusion\Tables\Filters\StateFusionSelectFilter;
+    use Filament\Forms\Form;
+    use Filament\Resources\Resource;
+    use Filament\Tables\Table;
+
+    class OrderResource extends Resource
+    {
+        // ...
+
+        public static function table(Table $table): Table
+        {
+            return $table
+                ->columns([
+                    StateFusionSelectColumn::make(\'status\'),
+                ])
+                ->filters([
+                    StateFusionSelectFilter::make(\'status\'),
+                ]);
+        }
+    }
+    ```
+
+---
+
+## Screenshots
+
+| StateFusionSelectFilter | StateFusionSelectColumn | StateFusionToggleButtons |
+| :---: | :---: | :---: |
+| ![StateFusionSelectFilter](docs/screenshots/StateFusionSelectFilter.png) | ![StateFusionSelectColumn](docs/screenshots/StateFusionSelectColumn.png) | ![StateFusionToggleButtons](docs/screenshots/StateFusionToggleButtons.png) |
+
+| StateFusionTableAction | StateFusionBulkAction | StateFusionRadio |
+| :---: | :---: | :---: |
+| ![StateFusionTableAction](docs/screenshots/StateFusionTableAction.png) | ![StateFusionBulkAction](docs/screenshots/StateFusionBulkAction.png) | ![StateFusionRadio](docs/screenshots/StateFusionRadio.png) |
 
 ---
 
@@ -112,9 +226,31 @@ composer require a909m/filament-statefusion
 
 ## Usage
 
-### Table Column
+### Form Components
 
-Display state information in your Filament tables:
+You can use the following state-aware components in your forms:
+
+- `StateFusionSelect`
+- `StateFusionCheckboxList`
+- `StateFusionRadio`
+- `StateFusionToggleButtons`
+
+```php
+use A909M\FilamentStateFusion\Forms\Components\StateFusionSelect;
+use A909M\FilamentStateFusion\Forms\Components\StateFusionCheckboxList;
+use A909M\FilamentStateFusion\Forms\Components\StateFusionRadio;
+use A909M\FilamentStateFusion\Forms\Components\StateFusionToggleButtons;
+
+StateFusionSelect::make('status'),
+StateFusionCheckboxList::make('status'),
+StateFusionRadio::make('status'),
+StateFusionToggleButtons::make('status'),
+```
+
+### Table Columns
+
+#### StateFusionSelectColumn
+Display state information in your Filament tables and allow for quick state transitions.
 
 ```php
 use A909M\FilamentStateFusion\Tables\Columns\StateFusionSelectColumn;
@@ -122,6 +258,17 @@ use A909M\FilamentStateFusion\Tables\Columns\StateFusionSelectColumn;
 StateFusionSelectColumn::make('status')
     ->sortable()
     ->toggleable();
+```
+
+#### TextColumn
+You can also use the standard `TextColumn` to display the state as a badge. If your state classes implement `HasColor` and `HasIcon`, the badge will automatically reflect the state's color, and you can display an icon.
+
+```php
+use Filament\Tables\Columns\TextColumn;
+
+TextColumn::make('status')
+    ->badge()
+    ->icon(fn ($record) => $record->status->getIcon());
 ```
 
 ### Table Filter
@@ -134,21 +281,21 @@ use A909M\FilamentStateFusion\Tables\Filters\StateFusionSelectFilter;
 StateFusionSelectFilter::make('status');
 ```
 
-### State Transitions
+### Table Actions
 
-Create actions to transition between states:
+#### StateFusionTableAction
+Add state transition actions to your table rows.
 
 ```php
-use A909M\FilamentStateFusion\Actions\StateFusionAction;
+use A909M\FilamentStateFusion\Tables\Actions\StateFusionTableAction;
 
-StateFusionAction::make('approve')
+StateFusionTableAction::make('approve')
     ->fromState(PendingState::class)
     ->toState(ApprovedState::class);
 ```
 
-### Bulk Actions
-
-Transition multiple records at once:
+#### StateFusionBulkAction
+Transition multiple records at once.
 
 ```php
 use A909M\FilamentStateFusion\Tables\Actions\StateFusionBulkAction;
@@ -158,14 +305,28 @@ StateFusionBulkAction::make('approve')
     ->toState(ApprovedState::class);
 ```
 
-### Table Actions
+### Infolist Entries
 
-Add state transition actions to your tables:
+#### TextEntry
+Similar to the table column, you can use the standard `TextEntry` in your infolists to display the model state as a badge with an icon and color.
 
 ```php
-use A909M\FilamentStateFusion\Tables\Actions\StateFusionTableAction;
+use Filament\Infolists\Components\TextEntry;
 
-StateFusionTableAction::make('approve')
+TextEntry::make('status')
+    ->badge()
+    ->icon(fn ($record) => $record->status->getIcon());
+```
+
+### Page Actions
+
+#### StateFusionAction
+Create actions to transition between states from a page.
+
+```php
+use A909M\FilamentStateFusion\Actions\StateFusionAction;
+
+StateFusionAction::make('approve')
     ->fromState(PendingState::class)
     ->toState(ApprovedState::class);
 ```
@@ -269,9 +430,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 
 ## Credits
 
--   [A909M](https://github.com/a909m)
--   [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states)
--   [All Contributors](../../contributors)
+- [A909M](https://github.com/a909m)
+- [All Contributors](../../contributors)
 
 ---
 
