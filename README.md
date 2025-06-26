@@ -1,240 +1,184 @@
 # Filament-StateFusion
 
-**Filament StateFusion** is a powerful FilamentPHP plugin that seamlessly integrates [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) into the Filament admin panel. This package provides an intuitive way to manage model states, transitions, and filtering within Filament, enhancing the user experience and developer productivity.
-
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/a909m/filament-statefusion.svg?style=flat-square)](https://packagist.org/packages/a909m/filament-statefusion)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/a909m/filament-statefusion/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/a909m/filament-statefusion/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/a909m/filament-statefusion/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/a909m/filament-statefusion/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/a909m/filament-statefusion.svg?style=flat-square)](https://packagist.org/packages/a909m/filament-statefusion)
 
-# Features
+**Filament StateFusion** is a powerful [FilamentPHP](https://filamentphp.com/) plugin that seamlessly integrates [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) into the Filament admin panel. Effortlessly manage model states, transitions, and filtering within Filament, enhancing both user experience and developer productivity.
 
--   Listing states within tables and exports
--   Filtering records by states
--   Grouping records by states
--   Transitioning to valid states using select or toggle button components
--   Transitioning to valid states using page and table actions
--   Bulk transition to valid states using bulk actions
--   Out-of-the-box support for the Spatie Laravel Model States package
--   Compatible with dark mode
+---
+
+## Table of Contents
+
+-   [Introduction](#introduction)
+-   [Features](#features)
+-   [Screenshots](#screenshots)
+-   [Installation](#installation)
+-   [Setup](#setup)
+-   [Usage](#usage)
+-   [Customization](#customization)
+-   [Testing](#testing)
+-   [Changelog](#changelog)
+-   [Contributing](#contributing)
+-   [Security](#security-vulnerabilities)
+-   [Credits](#credits)
+-   [License](#license)
+
+---
+
+## Introduction
+
+Filament-StateFusion brings the power of [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) to your Filament admin panel. It allows you to:
+
+-   Display model states in tables and exports
+-   Filter and group records by state
+-   Transition between states using intuitive UI components
+-   Support custom transitions with forms and additional data
+
+This plugin is ideal for applications that use state machines, such as order processing, publishing workflows, or any scenario where models have well-defined states and transitions.
+
+---
+
+## Features
+
+-   List model states in Filament tables
+-   Filter and group records by state
+-   Transition to valid states using select, toggle, page, or table actions
+-   Bulk transition records to new states
+-   Out-of-the-box support for [Spatie Laravel Model States](https://spatie.be.docs/laravel-model-states)
+-   Custom transition forms for collecting additional data
+-   Customizable labels, colors, icons, and descriptions for states and transitions
+-   Compatible with Filament dark mode
+
+---
 
 ## Installation
 
-You can install the package via composer:
+You can install the package via Composer:
 
 ```bash
 composer require a909m/filament-statefusion
 ```
 
+---
+
 ## Setup
 
-Make sure you have configured at least one Spatie Laravel model state. For more information, refer to the official Spatie [documentation](https://spatie.be/docs/laravel-model-states/v2/01-introduction).
+1. **Prepare your abstract state class:**
 
-### State Preparation
+    Implement the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait on your abstract state class (not the Eloquent model):
 
-When utilizing Spatie Laravel Model States, you'll have several abstract state classes. These abstract classes require certain modifications. To properly integrate them, it's necessary to implement the `HasFilamentStateFusion` interface and utilize the `StateFusionInfo` trait.
+    ```php
+    use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
+    use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
+    use Spatie\ModelStates\State;
+    use Spatie\ModelStates\StateConfig;
 
-Here's an example of the `OrderState` abstract class with the necessary modifications already applied:
+    abstract class OrderState extends State implements HasFilamentStateFusion
+    {
+        use StateFusionInfo;
+
+        public static function config(): StateConfig
+        {
+            return parent::config()
+                ->default(NewState::class)
+                ->allowTransition(NewState::class, ProcessingState::class)
+                ->allowTransition(ProcessingState::class, ShippedState::class)
+                ->allowTransition(ShippedState::class, DeliveredState::class)
+                ->allowTransition([NewState::class, ProcessingState::class], CancelledState::class, ToCancelled::class);
+        }
+    }
+    ```
+
+2. **Custom transitions:**
+
+    If you use custom transition classes, implement `HasFilamentStateFusion` and use `StateFusionInfo` on them as well.
+
+    ```php
+    use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
+    use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
+    use Spatie\ModelStates\Transition;
+
+    final class ToCancelled extends Transition implements HasFilamentStateFusion
+    {
+        use StateFusionInfo;
+
+        // ... constructor and handle method ...
+    }
+    ```
+
+---
+
+## Usage
+
+### Table Column
+
+Display state information in your Filament tables:
 
 ```php
-<?php
+use A909M\FilamentStateFusion\Tables\Columns\StateFusionSelectColumn;
 
-namespace App\States;
-
-use App\Models\Order;
-use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
-use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
-use Spatie\ModelStates\State;
-use Spatie\ModelStates\StateConfig;
-
-abstract class OrderState extends State implements HasFilamentStateFusion
-{
-    use StateFusionInfo;
-
-    public static function config(): StateConfig
-    {
-        return parent::config()
-            ->default(NewState::class)
-            ->allowTransition(NewState::class, ProcessingState::class)
-            ->allowTransition(ProcessingState::class, ShippedState::class)
-            ->allowTransition(ShippedState::class, DeliveredState::class)
-            ->allowTransition([NewState::class, ProcessingState::class], CancelledState::class, ToCancelled::class);
-    }
-}
+StateFusionSelectColumn::make('status')
+    ->sortable()
+    ->toggleable();
 ```
 
-> [!TIP]
-> More information about state configuration can be found in the official
-> Spatie [documentation](https://spatie.be/docs/laravel-model-states/v2/working-with-states/01-configuring-states).
+### Table Filter
 
-#### Transition Preparation
-
-Spatie Laravel model states offer support for custom transition classes. All custom transition classes must implement
-the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait before they can be used
-within Filament.
-
-Here is an example of the `ToCancelled` transition class with the necessary modifications in place.
+Filter records by state:
 
 ```php
-<?php
+use A909M\FilamentStateFusion\Tables\Filters\StateFusionSelectFilter;
 
-namespace App\States;
-
-use App\Models\Order;
-use Spatie\ModelStates\Transition;
-
-
-final class ToCancelled extends Transition
-{
-
-    public function __construct(
-        private readonly Order $order,
-    ) {
-    }
-
-    public function handle(): Order
-    {
-        $this->order->state = new CancelledState($this->order);
-        $this->order->cancelled_at = now();
-
-        $this->order->save();
-
-        return $this->order;
-    }
-}
+StateFusionSelectFilter::make('status');
 ```
 
-> [!TIP]
-> For more information about transition configuration, refer to the official Spatie
-> [documentation](https://spatie.be/docs/laravel-model-states/v2/working-with-transitions/02-custom-transition-classes).
+### State Transitions
 
-##### Additional Transition Data
-
-Most of the time, additional data is needed before transitioning to a new state. Considering the `ToCancelled`
-transition, it would be beneficial to store a reason explaining why the state transitioned to cancelled state. By adding
-a `form` method to the transition class, a form will be displayed when initiating the transition.
-
-Here is an example `ToCancelled` transition class with the form is place. This transition will display a reason
-textarea when the `StateFusionAction` or `StateFusionTableAction` button is clicked.
+Create actions to transition between states:
 
 ```php
-<?php
+use A909M\FilamentStateFusion\Actions\StateFusionAction;
 
-namespace App\States;
-
-use App\Models\Order;
-use Spatie\ModelStates\Transition;
-
-
-final class ToCancelled extends Transition 
-{
-
-    public function __construct(
-        private readonly Order $order,
-        private readonly string $reason = '',
-    ) {
-    }
-
-    public function handle(): Order
-    {
-        $this->order->state = new CancelledState($this->order);
-        $this->order->cancelled_at = now();
-        $this->order->cancellation_reason = $this->reason;
-
-        $this->order->save();
-
-        return $this->order;
-    }
-
-    public function form(): array | Closure | null
-    {
-        return [
-            Textarea::make('reason')
-                ->required()
-                ->minLength(1)
-                ->maxLength(1000)
-                ->rows(5)
-                ->helperText(__('This reason will be sent to the customer.')),
-        ];
-    }
-}
+StateFusionAction::make('approve')
+    ->fromState(PendingState::class)
+    ->toState(ApprovedState::class);
 ```
 
-> [!WARNING]
-> Since the plug-in needs to create transition instances to determine if there is a form, all constructor properties,
-> except for the model, must have default values.
+### Bulk Actions
 
-By default, this plug-in will map the form component names to their constructor property names. Considering the
-previous `ToCancelled` transition, the `reason` textarea input will correspond to the constructor property `$reason`. If
-you want to make any modifications before creating the transition instance, you can override the static method `fill`.
-
-For example, you can prefix the `reason`:
+Transition multiple records at once:
 
 ```php
-<?php
+use A909M\FilamentStateFusion\Tables\Actions\StateFusionBulkAction;
 
-namespace App\States;
-
-use App\Models\Order;
-use Illuminate\Support\Arr;
-use Spatie\ModelStates\Transition;
-
-
-final class ToCancelled extends Transition i
-{
-
-    public function __construct(
-        private readonly Order $order,
-        private readonly string $reason = '',
-    ) {
-    }
-
-    public static function fill(Model $model, array $formData): SpatieTransition
-    {
-        return new self(
-            order: $model,
-            reason: 'The order is cancelled because: ' . Arr::get($formData, 'reason'),
-        );
-    }
-
-    public function handle(): Order
-    {
-        $this->order->state = new CancelledState($this->order);
-        $this->order->cancelled_at = now();
-        $this->order->cancellation_reason = $this->reason;
-
-        $this->order->save();
-
-        return $this->order;
-    }
-
-    public function form(): array | Closure | null
-    {
-        return [
-            Textarea::make('reason')
-                ->required()
-                ->minLength(1)
-                ->maxLength(1000)
-                ->rows(5)
-                ->helperText(__('This reason will be sent to the customer.')),
-        ];
-    }
-}
+StateFusionBulkAction::make('approve')
+    ->fromState(PendingState::class)
+    ->toState(ApprovedState::class);
 ```
 
-#### Optional Label, Description, Color and Icon
+### Table Actions
 
-By default, the name of the state class is used as a label (for example, `CancelledState` will have the
-label `Cancelled`), without any assigned description, color or icon. If you desire a different label, description,
-color, or icon, you must implement the `HasLabel`, `HasDescription`, `HasColor`, or `HasIcon` interface.
-
-Here is an example of the `Cancelled` state with `HasLabel`, `HasDescription`, `HasColor`, and `HasIcon` implemented.
+Add state transition actions to your tables:
 
 ```php
-<?php
+use A909M\FilamentStateFusion\Tables\Actions\StateFusionTableAction;
 
-namespace App\States;
+StateFusionTableAction::make('approve')
+    ->fromState(PendingState::class)
+    ->toState(ApprovedState::class);
+```
 
+---
+
+## Customization
+
+### Customizing States
+
+To customize how states appear in the UI, implement the `HasLabel`, `HasDescription`, `HasColor`, or `HasIcon` interfaces on your **concrete state classes**:
+
+```php
 use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasDescription;
@@ -265,49 +209,19 @@ final class CancelledState extends OrderState implements HasDescription, HasColo
 }
 ```
 
-> [!NOTE]
-> The description is used when utilizing the `StateFusionRadio` component.
+### Customizing Transitions
 
-By default, "Transition to" followed by the name of the destination state is used as the transition label. Like states,
-it has no color or icon. If you want a different label, or if you want to use a color or icon; you have to implement
-the `HasLabel`, `HasColor` or `HasIcon` interface.
-
-Here is an example `ToCancelled` transtition with `HasLabel`, `HasColor` and `HasIcon` implemented.
+Similarly, transitions can be customized by implementing the same interfaces:
 
 ```php
-<?php
-
-namespace App\States;
-
-use App\Models\Order;
 use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 use Spatie\ModelStates\Transition;
 
-
 final class ToCancelled extends Transition implements HasLabel, HasColor, HasIcon
 {
-
-
-    public function __construct(
-        private readonly Order $order,
-        private readonly string $reason = '',
-    ) {
-    }
-
-    public function handle(): Order
-    {
-        $this->order->state = new CancelledState($this->order);
-        $this->order->cancelled_at = now();
-        $this->order->cancellation_reason = $this->reason;
-
-        $this->order->save();
-
-        return $this->order;
-    }
-
     public function getLabel(): string
     {
         return __('Mark as Cancelled');
@@ -322,27 +236,10 @@ final class ToCancelled extends Transition implements HasLabel, HasColor, HasIco
     {
         return 'heroicon-o-x-circle';
     }
-
-    public function form(): array | Closure | null
-    {
-        return [
-            Textarea::make('reason')
-                ->required()
-                ->minLength(1)
-                ->maxLength(1000)
-                ->rows(5)
-                ->helperText(__('This reason will be sent to the customer.')),
-        ];
-    }
 }
 ```
 
-## Usage
-
-```php
-$filamentStateFusion = new A909M\FilamentStateFusion();
-echo $filamentStateFusion->echoPhrase('Hello, A909M!');
-```
+---
 
 ## Testing
 
@@ -350,22 +247,33 @@ echo $filamentStateFusion->echoPhrase('Hello, A909M!');
 composer test
 ```
 
+---
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
 
+---
+
 ## Contributing
 
-Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](.github/CONTRIBUTING.md) for details on how to contribute to this project.
+
+---
 
 ## Security Vulnerabilities
 
 Please review [our security policy](../../security/policy) on how to report security vulnerabilities.
 
+---
+
 ## Credits
 
--   [A909M](https://github.com/A909M)
+-   [A909M](https://github.com/a909m)
+-   [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states)
 -   [All Contributors](../../contributors)
+
+---
 
 ## License
 
