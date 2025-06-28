@@ -75,7 +75,7 @@ Next, install the Filament-StateFusion plugin via Composer:
 composer require a909m/filament-statefusion
 ```
 
-Then, implement the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait on your abstract state class and any custom transition classes.
+Then, implement the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait on your abstract state class.
 
 Finally, you can start using the components and actions provided by this plugin in your Filament resources.
 
