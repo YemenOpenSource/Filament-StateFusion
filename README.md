@@ -121,7 +121,7 @@ Here\'s a quick example of how to get started.
         use HasStates;
 
         protected $casts = [
-            \'status\' => OrderState::class,
+            'status' => OrderState::class,
         ];
     }
     ```
@@ -144,10 +144,10 @@ Here\'s a quick example of how to get started.
         {
             return $table
                 ->columns([
-                    StateFusionSelectColumn::make(\'status\'),
+                    StateFusionSelectColumn::make('status'),
                 ])
                 ->filters([
-                    StateFusionSelectFilter::make(\'status\'),
+                    StateFusionSelectFilter::make('status'),
                 ]);
         }
     }
@@ -205,22 +205,6 @@ composer require a909m/filament-statefusion
     }
     ```
 
-2. **Custom transitions:**
-
-    If you use custom transition classes, implement `HasFilamentStateFusion` and use `StateFusionInfo` on them as well.
-
-    ```php
-    use A909M\FilamentStateFusion\Concerns\StateFusionInfo;
-    use A909M\FilamentStateFusion\Contracts\HasFilamentStateFusion;
-    use Spatie\ModelStates\Transition;
-
-    final class ToCancelled extends Transition implements HasFilamentStateFusion
-    {
-        use StateFusionInfo;
-
-        // ... constructor and handle method ...
-    }
-    ```
 
 ---
 
