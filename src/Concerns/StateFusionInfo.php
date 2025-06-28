@@ -32,6 +32,7 @@ trait StateFusionInfo
             if (method_exists($instance, 'getColor')) {
                 return [$stateClass::$name => $instance->getColor()];
             }
+
             return [$stateClass::$name => null];
         })->toArray();
     }
@@ -49,6 +50,7 @@ trait StateFusionInfo
             if (method_exists($instance, 'getDescription')) {
                 return [$stateClass::$name => $instance->getDescription()];
             }
+
             return [$stateClass::$name => null];
         })->toArray();
     }
@@ -66,6 +68,7 @@ trait StateFusionInfo
             if (method_exists($instance, 'getIcon')) {
                 return [$stateClass::$name => $instance->getIcon()];
             }
+
             return [$stateClass::$name => null];
         })->toArray();
     }
