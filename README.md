@@ -33,14 +33,14 @@
 
 ## Introduction
 
-Filament-StateFusion brings the power of [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) to your Filament admin panel. It allows you to:
+Filament-StateFusion brings the capabilities of [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) to your Filament admin panel. With this plugin, you can:
 
 - Display model states in tables
 - Filter and group records by state
 - Transition between states using intuitive UI components
 - Support custom transitions with forms and additional data
 
-This plugin is ideal for applications that use state machines, such as order processing, publishing workflows, or any scenario where models have well-defined states and transitions.
+This plugin is particularly useful for applications that utilize state machines, such as order processing, publishing workflows, or any scenario where models exhibit well-defined states and transitions.
 
 ---
 
