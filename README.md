@@ -1,3 +1,4 @@
+![Description](images/StateFusion.png)
 # Filament-StateFusion
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/a909m/filament-statefusion.svg?style=flat-square)](https://packagist.org/packages/a909m/filament-statefusion)
