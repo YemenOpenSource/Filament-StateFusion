@@ -19,6 +19,7 @@
 - [Installation](#installation)
 - [Setup](#setup)
 - [Usage](#usage)
+- [Using a Custom Attribute](#using-a-custom-attribute)
 - [Customization](#customization)
 - [Testing](#testing)
 - [Changelog](#changelog)
@@ -230,6 +231,19 @@ StateFusionCheckboxList::make('status'),
 StateFusionRadio::make('status'),
 StateFusionToggleButtons::make('status'),
 ```
+
+#### Using a Custom Attribute
+
+By default, the state components use the first attribute defined in your model's `getDefaultStates()` as the state attribute. If your model uses a different attribute name or you want to specify which attribute to use, you can set it using the `attribute()` method provided by the `HasStateAttributes` trait.
+
+```php
+// Example: Use a custom attribute for the state component
+StateFusionSelect::make('custom_status')
+    ->attribute('custom_status');
+```
+
+This is useful when your model has multiple state attributes or you want to reuse the component for different attributes.
+
 
 ### Table Columns
 
