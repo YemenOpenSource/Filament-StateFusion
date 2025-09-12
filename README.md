@@ -16,7 +16,6 @@
 - [Features](#features)
 - [Getting Started](#getting-started)
 - [Quickstart](#quickstart)
-- [Screenshots](#screenshots)
 - [Installation](#installation)
 - [Setup](#setup)
 - [Usage](#usage)
@@ -54,6 +53,14 @@ This plugin is particularly useful for applications that utilize state machines,
 - Custom transition forms for collecting additional data
 - Customizable labels, colors, icons, and descriptions for states and transitions
 - Compatible with Filament dark mode
+
+---
+
+---
+
+## 🎬 Preview
+
+> 📸 _Screenshots and demo GIFs will be added soon_
 
 ---
 
@@ -155,19 +162,7 @@ Here\'s a quick example of how to get started.
     }
     ```
 
----
 
-## Screenshots
-
-| StateFusionSelectFilter | StateFusionSelectColumn | StateFusionToggleButtons |
-| :---: | :---: | :---: |
-| ![StateFusionSelectFilter](docs/screenshots/StateFusionSelectFilter.png) | ![StateFusionSelectColumn](docs/screenshots/StateFusionSelectColumn.png) | ![StateFusionToggleButtons](docs/screenshots/StateFusionToggleButtons.png) |
-
-| StateFusionTableAction | StateFusionBulkAction | StateFusionRadio |
-| :---: | :---: | :---: |
-| ![StateFusionTableAction](docs/screenshots/StateFusionTableAction.png) | ![StateFusionBulkAction](docs/screenshots/StateFusionBulkAction.png) | ![StateFusionRadio](docs/screenshots/StateFusionRadio.png) |
-
----
 
 ## Installation
 
