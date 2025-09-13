@@ -69,8 +69,8 @@ This plugin is particularly useful for applications that utilize state machines,
 This plugin is designed to work with the following dependencies:
 
 - PHP: ^8.1
-- Laravel: ^10.0|^11.0
-- Filament: ^3.0
+- Laravel: ^10.0|^11.0|^12.0
+- Filament: ^3.0|^4.0
 - Spatie Laravel Model States: ^2.0
 
 
@@ -79,10 +79,23 @@ This plugin is designed to work with the following dependencies:
 First, you need to have the [Spatie Laravel Model States](https://spatie.be/docs/laravel-model-states) package installed and configured. Make sure you have created an abstract state class for your model.
 
 Next, install the Filament-StateFusion plugin via Composer:
+## Installation
+
+| Plugin Version | Filament Version | Readme |
+|----------------|------------------|-------------|
+| 1.x            | 3.x              |  [Link](https://github.com/A909M/Filament-StateFusion/main/README.md)      |
+| 2.x            | 4.x              |  [Link](https://github.com/A909M/Filament-StateFusion/2.x/README.md)     |
+
 
 ```bash
 composer require a909m/filament-statefusion
 ```
+
+### Upgrading to Filament v4
+
+- `composer require a909m/filament-statefusion:2.0`
+- The Action classes were simplified into a single `StateFusionBulkAction` and `StateFusionAction` for pages and tables
+
 
 Then, implement the `HasFilamentStateFusion` interface and use the `StateFusionInfo` trait on your abstract state class.
 
