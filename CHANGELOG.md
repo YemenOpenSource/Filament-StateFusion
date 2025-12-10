@@ -2,6 +2,18 @@
 
 All notable changes to `Filament-StateFusion` will be documented in this file.
 
+## v2.2.3 - 2025-12-10
+
+### What's Changed
+
+* Update resolveLabel, resolveColor, and resolveIcon signatures to match filament v4 by @rajabilal555 in https://github.com/A909M/Filament-StateFusion/pull/14
+
+### New Contributors
+
+* @rajabilal555 made their first contribution in https://github.com/A909M/Filament-StateFusion/pull/14
+
+**Full Changelog**: https://github.com/A909M/Filament-StateFusion/compare/v2.2.2...v2.2.3
+
 ## v2.2.2 - 2025-12-09
 
 ### What's Changed
