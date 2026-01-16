@@ -2,6 +2,14 @@
 
 All notable changes to `Filament-StateFusion` will be documented in this file.
 
+## v2.3.0 - 2026-01-16
+
+### What's Changed
+
+* Add support Filament v5 by @A909M in https://github.com/A909M/Filament-StateFusion/pull/19
+
+**Full Changelog**: https://github.com/A909M/Filament-StateFusion/compare/v2.2.3...v2.3.0
+
 ## v2.2.3 - 2025-12-10
 
 ### What's Changed
